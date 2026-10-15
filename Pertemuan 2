@@ -1,0 +1,179 @@
+Contoh 2.1 Membuat list sebagai representasi array
+nilai = [78, 85, 90, 67, 88]
+print(nilai)
+print(type(nilai))
+
+Contoh 2.2 Menentukan jumlah elemen dan indeks terakhir
+print('Jumlah elemen:', len(nilai))
+print('Indeks terakhir:', len(nilai) - 1)
+print('Elemen terakhir:', nilai[len(nilai) - 1])
+
+Contoh 2.3 Akses berdasarkan indeks
+nilai = [78, 85, 90, 67, 88]
+print(nilai[0])
+print(nilai[2])
+print(nilai[-1])
+
+Contoh 2.4 Update elemen pada indeks tertentu
+nilai[3] = 75
+print(nilai)
+
+Contoh 2.5 Menambahkan elemen dengan append()
+nilai.append(92)
+print(nilai)
+
+Contoh 2.6 Menyisipkan elemen
+nilai.insert(2, 80)
+print(nilai)
+
+2.6.1 pop() Menghapus Berdasarkan Indeks Contoh 2.7 Menghapus berdasarkan indeks
+data = [10, 20, 30, 40, 50]
+dihapus = data.pop(2)
+print('Dihapus:', dihapus)
+print('Data:', data)
+
+2.6.2 remove() Menghapus Berdasarkan Nilai
+Contoh 2.8 Menghapus berdasarkan nilai
+data = [10, 20, 30, 20, 40]
+data.remove(20)
+print(data)
+
+2.6.3 `del` Menghapus Berdasarkan Posisi atau Slice
+Contoh 2.9 Menggunakan del
+data = [10, 20, 30, 40, 50]
+del data[1]
+print(data)
+del data[1:3]
+print(data)
+
+2.7.1 Traversal Berdasarkan Nilai
+Contoh 2.10 Traversal langsung terhadap nilai
+nilai = [78, 85, 90, 75, 88]
+for x in nilai:
+  print(x)
+
+  2.7.2 Traversal Berdasarkan Indeks
+Contoh 2.11 Traversal menggunakan indeks
+for i in range(len(nilai)):
+  print(i, nilai[i])
+
+  2.7.3 Traversal dengan `enumerate()`
+Contoh 2.12 Traversal menggunakan enumerate()
+for i, x in enumerate(nilai):
+  print('Indeks', i, 'nilai', x)
+
+  2.8.2 Pseudocode
+Pseudocode 2.1 Linear Search
+LINEAR-SEARCH(data, target)
+  untuk setiap indeks i dari 0 sampai n-1
+    jika data[i] = target
+      kembalikan i
+kembalikan -1
+
+2.9. Implementasi Linear Search dengan Python
+Contoh 2.13 Fungsi Linear Search
+def linear_search(data, target):
+  for index, value in enumerate(data):
+    if value == target:
+      return index
+return -1
+
+2.9.2 Menjalankan Fungsi
+Contoh 2.14 Memanggil fungsi Linear Search
+data = [12, 35, 21, 48, 57, 63]
+
+hasil1 = linear_search(data, 48)
+hasil2 = linear_search(data, 99)
+
+print('48 berada pada indeks:', hasil1)
+print('99 berada pada indeks:', hasil2)
+
+2.9.3 Mencari Semua Kemunculan Contoh 2.15 Mencari seluruh kemunculan target
+def linear_search_all(data, target):
+  posisi = []
+  for index, value in enumerate(data):
+    if value == target:
+      posisi.append(index)
+  return posisi
+  
+data = [20, 10, 20, 30, 20]
+print(linear_search_all(data, 20))
+
+2.10.1 Menambahkan Jejak Eksekusi pada Program
+Contoh 2.16 Linear Search dengan jejak eksekusi
+def linear_search_trace(data, target):
+  for index, value in enumerate(data):
+    print('Periksa indeks', index, 'nilai', value)
+    if value == target:
+      print('Target ditemukan')
+      return index
+  print('Target tidak ditemukan')
+  return -1
+
+linear_search_trace([7, 11, 15, 18, 25, 30], 25)
+
+2.12. Implementasi Binary Search dengan Python
+Contoh 2.17 Fungsi Binary Search iteratif
+def binary_search(data, target):
+  left = 0
+  right = len(data) - 1
+
+  while left <= right:
+    mid = (left + right) // 2
+
+  if data[mid] == target:
+    return mid
+  elif data[mid] < target:
+    left = mid + 1
+  else:
+    right = mid - 1
+
+  return -1
+
+  2.12.2 Menjalankan Fungsi
+Contoh 2.18 Pengujian Binary Search
+data = [12, 18, 25, 31, 44, 57, 63, 70, 82]
+
+print(binary_search(data, 57))
+print(binary_search(data, 13))
+
+2.13.1 Versi dengan Jejak Eksekusi
+Contoh 2.19 Binary Search dengan trace
+def binary_search_trace(data, target):
+  left = 0
+  right = len(data) - 1
+
+  while left <= right:
+    mid = (left + right) // 2
+    print('left=', left, 'right=', right, 'mid=', mid, 'nilai=', data[mid])
+
+    if data[mid] == target:
+      return mid
+    elif data[mid] < target:
+      left = mid + 1
+    else:
+      right = mid - 1
+
+  return -1
+  
+binary_search_trace([12,18,25,31,44,57,63,70,82], 57)
+
+2.16.1 Menyiapkan Fungsi Contoh 2.20 Eksperimen sederhana menggunakan timeit
+for n in [1_000, 10_000, 100_000]:
+  data = list(range(n))
+  target = -1
+
+  t_linear = timeit.timeit(
+    lambda: linear_search(data, target),
+    number=100
+  )
+  t_binary = timeit.timeit(
+    lambda: binary_search(data, target),
+    number=100
+  )
+  
+  print('n =', n)
+  print(' linear:', t_linear)
+  print(' binary:', t_binary)
+
+  
