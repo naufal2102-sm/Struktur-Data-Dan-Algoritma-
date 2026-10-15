@@ -171,6 +171,44 @@ for n in [1_000, 10_000, 100_000]:
     lambda: binary_search(data, target),
     number=100
   )
+
+Praktik Mandiri 2.1 — Operasi Array
+Soal no 1
+nilai = [78, 85, 90, 67, 88, 95, 76, 82, 60, 92]
+
+print(nilai)
+
+Soal no 2
+nilai = [78, 85, 90, 67, 88, 99, 76, 87, 56, 45]
+print("elmen pertama:", nilai[0])
+print("elmen kelima:", nilai[4])
+print("elmen terakhir:", nilai[-1])
+
+Soal no 3
+nilai[3] = 75
+print(nilai)
+
+Soal no 4
+nilai.append(95)
+nilai.append(100)
+print(nilai)
+
+Soal no 5
+nilai.insert(2, 25)
+print(nilai)
+
+Soal no 6
+nilai = [78, 85, 90, 67, 88, 99, 76, 87, 56, 45]
+dihapus = nilai.pop(2)
+print('Dihapus:', dihapus)
+print('nilai:', nilai)
+
+Soal no 7
+for i, x in enumerate(nilai):
+  print('Indeks', i, 'nilai', x)
+
+soal no 8 insret () menyebabkan elmen setelah indeks 2 bergeser ke kanan.
+pop () dan remove () menyebabkan elmen setelah elmen yang dihapus bergeser ke kiri.
   
   print('n =', n)
   print(' linear:', t_linear)
