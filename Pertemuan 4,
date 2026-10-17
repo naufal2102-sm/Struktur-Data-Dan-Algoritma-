@@ -1,0 +1,313 @@
+4.5.2 Uji Runtime
+print('Praktik Stack siap')
+print('Prinsip:', 'LIFO')
+
+4.6.1 Membangun Class Stack
+class Stack:
+    def __init__(self):
+        self.items = []
+
+    def is_empty(self):
+        return len(self.items) == 0
+
+    def push(self, data):
+        self.items.append(data)
+
+    def pop(self):
+        if self.is_empty():
+            return None
+        return self.items.pop()
+
+    def peek(self):
+        if self.is_empty():
+            return None
+        return self.items[-1]
+
+    def size(self):
+        return len(self.items)
+
+4.7. Menguji Operasi Dasar
+stack = Stack()
+
+stack.push(5)
+stack.push(8)
+stack.push(12)
+
+print("Isi stack:", stack.items)
+print("Elemen teratas:", stack.peek())
+
+print("Pop pertama:", stack.pop())
+print("Pop kedua:", stack.pop())
+
+print("Isi stack akhir:", stack.items)
+print("Ukuran stack:", stack.size())
+
+4.7.2 Melihat Isi Internal untuk Belajar
+stack = Stack()
+
+stack.push("A")
+stack.push("B")
+stack.push("C")
+
+print("Isi internal stack:", stack.items)
+print("Elemen teratas:", stack.peek())
+
+4.9. Underflow dan Penanganan Stack Kosong
+stack = []
+
+if len(stack) == 0:
+    print("Stack kosong, tidak bisa melakukan pop.")
+else:
+    print("Elemen yang dihapus:", stack.pop())
+
+4.10. Apakah Stack Bisa Overflow?
+class BoundedStack:
+    def __init__(self, capacity):
+        self.items = []
+        self.capacity = capacity
+
+    def push(self, data):
+        if len(self.items) >= self.capacity:
+            return False
+
+        self.items.append(data)
+        return True
+
+
+s = BoundedStack(2)
+
+print(s.push("A"))
+print(s.push("B"))
+print(s.push("C"))
+
+4.11.1 Mengapa Tidak Menggunakan insert(0) dan pop(0)?
+stack_list = []
+
+# Kurang sesuai untuk Stack yang efisien
+stack_list.insert(0, 10)
+stack_list.pop(0)
+
+# Lebih sesuai
+stack_list.append(10)
+stack_list.pop()
+
+4.12. Eksperimen Sederhana: Ujung vs Awal List
+import timeit
+
+n = 10000
+
+waktu_ujung = timeit.timeit(
+    stmt="x.append(1); x.pop()",
+    setup="x=[]",
+    number=n
+)
+
+waktu_awal = timeit.timeit(
+    stmt="x.insert(0, 1); x.pop(0)",
+    setup="x=[]",
+    number=n
+)
+
+print("Ujung:", waktu_ujung)
+print("Awal :", waktu_awal)
+
+4.13. Implementasi Stack Menggunakan Linked List
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+
+class LinkedStack:
+    def __init__(self):
+        self.top = None
+        self.count = 0
+
+    def is_empty(self):
+        return self.top is None
+
+    def push(self, data):
+        new_node = Node(data)
+        new_node.next = self.top
+        self.top = new_node
+        self.count += 1
+
+    def pop(self):
+        if self.is_empty():
+            return None
+
+        data = self.top.data
+        self.top = self.top.next
+        self.count -= 1
+        return data
+
+    def peek(self):
+        if self.is_empty():
+            return None
+        return self.top.data
+
+    def size(self):
+        return self.count
+
+
+linked_stack = LinkedStack()
+
+linked_stack.push("A")
+linked_stack.push("B")
+linked_stack.push("C")
+
+print("Top:", linked_stack.peek())
+print("Ukuran:", linked_stack.size())
+print("Pop:", linked_stack.pop())
+print("Top setelah pop:", linked_stack.peek())
+
+4.15. Aplikasi 1 — Membalik Data
+def reverse_text(text):
+    stack = Stack()
+
+    for char in text:
+        stack.push(char)
+
+    result = ""
+
+    while not stack.is_empty():
+        result += stack.pop()
+
+    return result
+
+
+print(reverse_text("DATA"))
+
+4.16.1 Algoritma
+def is_balanced(expression):
+    stack = Stack()
+    pairs = {
+        ")": "(",
+        "]": "[",
+        "}": "{"
+    }
+
+    for char in expression:
+        if char in "([{":
+            stack.push(char)
+
+        elif char in ")]}":
+            if stack.is_empty():
+                return False
+
+            if stack.pop() != pairs[char]:
+                return False
+
+    return stack.is_empty()
+
+
+print(is_balanced("(a + b) * [c - d]"))
+print(is_balanced("([)]"))
+print(is_balanced("((a+b)"))
+
+4.18. Aplikasi 3 — Konversi Bilangan Desimal ke Biner
+def decimal_to_binary(number):
+    if number == 0:
+        return "0"
+
+    stack = Stack()
+
+    while number > 0:
+        remainder = number % 2
+        stack.push(remainder)
+        number //= 2
+
+    binary = ""
+
+    while not stack.is_empty():
+        binary += str(stack.pop())
+
+    return binary
+
+
+print(decimal_to_binary(13))
+
+4.19.1 Algoritma Evaluasi
+def evaluate_postfix(tokens):
+    stack = Stack()
+
+    for token in tokens:
+        if token.isdigit():
+            stack.push(int(token))
+        else:
+            b = stack.pop()
+            a = stack.pop()
+
+            if token == "+":
+                stack.push(a + b)
+            elif token == "-":
+                stack.push(a - b)
+            elif token == "*":
+                stack.push(a * b)
+            elif token == "/":
+                stack.push(a / b)
+
+    return stack.pop()
+
+
+expr = ["2", "3", "+", "4", "*"]
+
+print(evaluate_postfix(expr))
+
+4.20.1 Simulasi Sederhana
+undo_stack = []
+redo_stack = []
+
+
+def do_action(action):
+    undo_stack.append(action)
+    redo_stack.clear()
+
+
+def undo():
+    if undo_stack:
+        action = undo_stack.pop()
+        redo_stack.append(action)
+        return action
+
+    return None
+
+
+def redo():
+    if redo_stack:
+        action = redo_stack.pop()
+        undo_stack.append(action)
+        return action
+
+    return None
+
+
+do_action("Mengetik Halo")
+
+print("Undo:", undo())
+print("Redo:", redo())
+
+4.21. Stack pada Pemanggilan Fungsi: Pengantar Call Stack
+def c():
+    print("C")
+
+
+def b():
+    c()
+    print("B")
+
+
+def a():
+    b()
+    print("A")
+
+
+a()
+
+4.23. Membaca dan Menangani Error Python
+4.23.1 IndexError
+data = []
+print(data[-1])
+4.23.2 AttributeError
+stack = Stack()
+stack.pus(10)
