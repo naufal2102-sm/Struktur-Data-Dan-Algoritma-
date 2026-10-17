@@ -1,0 +1,68 @@
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+
+class LinkedStack:
+    def __init__(self):
+        self.top = None
+        self.count = 0
+
+    def is_empty(self):
+        return self.top is None
+
+    def push(self, data):
+        node_baru = Node(data)
+        node_baru.next = self.top
+        self.top = node_baru
+        self.count += 1
+
+    def pop(self):
+        if self.is_empty():
+            return None
+
+        data = self.top.data
+        self.top = self.top.next
+        self.count -= 1
+        return data
+
+    def peek(self):
+        if self.is_empty():
+            return None
+        return self.top.data
+
+    def size(self):
+        return self.count
+
+    def display(self):
+        current = self.top
+
+        while current is not None:
+            print(current.data, end=" -> ")
+            current = current.next
+
+        print("None")
+
+
+stack = LinkedStack()
+
+stack.push("A")
+print("Setelah push A:")
+stack.display()
+
+stack.push("B")
+print("Setelah push B:")
+stack.display()
+
+stack.push("C")
+print("Setelah push C:")
+stack.display()
+
+print("Pop:", stack.pop())
+
+print("Setelah pop:")
+stack.display()
+
+print("Peek:", stack.peek())
+print("Size:", stack.size())
