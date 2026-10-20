@@ -1,0 +1,505 @@
+5.5.2 Uji Runtime
+print('Praktik Queue siap')
+print('Prinsip:', 'FIFO')
+
+5.6. Implementasi Awal Queue Menggunakan Python list
+class SimpleQueue:
+  def __init__(self):
+    self.items = []
+
+  def is_empty(self):
+    return len(self.items) == 
+    
+  def enqueue(self, data):
+    self.items.append(data)
+
+  def dequeue(self):
+    if self.is_empty():
+      return None
+    return self.items.pop(0)
+
+  def peek(self):
+    if self.is_empty():
+      return None
+    return self.items[0]
+
+  def size(self):
+    return len(self.items)
+
+5.7. Menguji Queue Berbasis list
+q = SimpleQueue()
+
+print(q.is_empty())
+q.enqueue('A')
+q.enqueue('B')
+q.enqueue('C')
+
+print('Front:', q.peek())
+print('Ukuran:', q.size())
+print('Keluar:', q.dequeue())
+print('Front baru:', q.peek())
+print('Isi:', q.items)
+
+5.9.1 Mengimpor deque
+from collections import deque
+
+q = deque()
+q.append('A')
+q.append('B')
+q.append('C')
+
+print(q)
+print('Keluar:', q.popleft())
+print(q)
+
+5.10. Membangun Class Queue dengan deque
+from collections import deque
+
+class Queue:
+    def __init__(self):
+        self.items = deque()
+
+    def is_empty(self):
+        return len(self.items) == 0
+
+    def enqueue(self, data):
+        self.items.append(data)
+
+    def dequeue(self):
+        if self.is_empty():
+            return None
+        return self.items.popleft()
+
+    def peek(self):
+        if self.is_empty():
+            return None
+        return self.items[0]
+
+    def size(self):
+        return len(self.items)
+
+5.11. Pengujian Operasi dan Edge Case
+q = Queue()
+
+for x in [10, 20, 30, 40]:
+    q.enqueue(x)
+
+print('Front:', q.peek())
+
+while not q.is_empty():
+    print('Diproses:', q.dequeue())
+
+print('Dequeue saat kosong:', q.dequeue())
+
+5.12.1 Eksperimen Waktu Sederhana
+import timeit
+
+n = 5000
+
+waktu_list = timeit.timeit(
+    stmt='x.pop(0); x.append(1)',
+    setup=f'x=list(range({n}))',
+    number=3000
+)
+
+waktu_deque = timeit.timeit(
+    stmt='x.popleft(); x.append(1)',
+    setup=f'from collections import deque; x=deque(range({n}))',
+    number=3000
+)
+
+print('list :', waktu_list)
+print('deque:', waktu_deque)
+
+5.13. Queue Menggunakan Linked List
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+
+class LinkedQueue:
+    def __init__(self):
+        self.front = None
+        self.rear = None
+        self.count = 0
+
+    def is_empty(self):
+        return self.front is None
+
+    def enqueue(self, data):
+        new_node = Node(data)
+
+        if self.is_empty():
+            self.front = self.rear = new_node
+        else:
+            self.rear.next = new_node
+            self.rear = new_node
+
+        self.count += 1
+
+    def dequeue(self):
+        if self.is_empty():
+            return None
+
+        data = self.front.data
+        self.front = self.front.next
+        self.count -= 1
+
+        if self.front is None:
+            self.rear = None
+
+        return data
+
+    def peek(self):
+        return None if self.is_empty() else self.front.data
+
+    def size(self):
+        return self.count
+
+5.15.1 Ide Modulo
+capacity = 5
+index = 4
+
+next_index = (index + 1) % capacity
+
+print(next_index)
+
+5.16. Implementasi Circular Queue Berkapasitas Tetap
+class CircularQueue:
+    def __init__(self, capacity):
+        self.capacity = capacity
+        self.items = [None] * capacity
+        self.front = 0
+        self.rear = 0
+        self.count = 0
+
+    def is_empty(self):
+        return self.count == 0
+
+    def is_full(self):
+        return self.count == self.capacity
+
+    def enqueue(self, data):
+        if self.is_full():
+            return False
+
+        self.items[self.rear] = data
+        self.rear = (self.rear + 1) % self.capacity
+        self.count += 1
+        return True
+
+    def dequeue(self):
+        if self.is_empty():
+            return None
+
+        data = self.items[self.front]
+        self.items[self.front] = None
+        self.front = (self.front + 1) % self.capacity
+        self.count -= 1
+        return data
+
+    def peek(self):
+        if self.is_empty():
+            return None
+        return self.items[self.front]
+
+    def size(self):
+        return self.count
+
+5.17. Dry Run Circular Queue
+cq = CircularQueue(5)
+
+for x in ['A', 'B', 'C']:
+    cq.enqueue(x)
+
+print(cq.items, cq.front, cq.rear)
+print('Keluar:', cq.dequeue())
+
+cq.enqueue('D')
+cq.enqueue('E')
+cq.enqueue('F')
+
+print(cq.items, cq.front, cq.rear)
+print('Front:', cq.peek())
+
+5.18. Queue Underflow dan Overflow
+from collections import deque
+
+buffer = deque(maxlen=3)
+buffer.append('A')
+buffer.append('B')
+buffer.append('C')
+buffer.append('D')
+print(buffer)
+
+5.19.1 Contoh Operasi Deque
+from collections import deque
+
+d = deque([20, 30])
+d.appendleft(10)
+d.append(40)
+print(d)
+
+print('Kiri keluar :', d.popleft())
+print('Kanan keluar:', d.pop())
+print(d)
+
+5.20. Studi Kecil Deque: Pemeriksaan Palindrome
+from collections import deque
+
+def is_palindrome(text):
+    chars = deque(c.lower() for c in text if c.isalnum())
+
+    while len(chars) > 1:
+        if chars.popleft() != chars.pop():
+            return False
+
+    return True
+
+
+print(is_palindrome('Katak'))
+print(is_palindrome('Struktur Data'))
+
+5.22. Mini Studi Kasus — Sistem Antrean Layanan
+from collections import deque
+
+class ServiceQueue:
+    def __init__(self):
+        self.queue = deque()
+        self.next_number = 1
+
+    def arrive(self, name):
+        ticket = f'A{self.next_number:03d}'
+        self.next_number += 1
+        self.queue.append((ticket, name))
+        return ticket
+
+    def serve(self):
+        if not self.queue:
+            return None
+        return self.queue.popleft()
+
+    def waiting_count(self):
+        return len(self.queue)
+
+    def next_customer(self):
+        return None if not self.queue else self.queue[0]
+
+
+service = ServiceQueue()
+
+print(service.arrive('Ani'))
+print(service.arrive('Budi'))
+print(service.arrive('Citra'))
+
+print('Berikutnya:', service.next_customer())
+print('Dilayani :', service.serve())
+print('Menunggu :', service.waiting_count())
+
+5.22.1 Menjalankan Skenario
+service = ServiceQueue()
+                  
+print(service.arrive('Ani'))
+print(service.arrive('Budi'))
+print(service.arrive('Citra'))
+
+print('Berikutnya:', service.next_customer())
+print('Dilayani :', service.serve())
+print('Menunggu :', service.waiting_count())
+
+5.24.1 IndexError pada deque kosong
+from collections import deque
+q = deque()
+q.popleft()
+
+5.24.2 NameError karena import belum dijalankan
+ q = deque() # error jika cell import belum pernah dijalankan                 
+
+5.24.3 AttributeError karena method salah                 
+q = Queue()
+q.enque(10)
+
+
+5.25. Praktik Mandiri 5.1 — Queue Dasar
+Membuat class Queue                 
+from collections import deque
+
+class Queue:
+    def __init__(self):
+        self.items = deque()
+
+    def enqueue(self, data):
+        self.items.append(data)
+
+    def dequeue(self):
+        if len(self.items) == 0:
+            return None
+        return self.items.popleft()
+
+    def peek(self):
+        if len(self.items) == 0:
+            return None
+        return self.items[0]
+
+    def size(self):
+        return len(self.items)
+
+    def is_empty(self):
+        return len(self.items) == 0
+
+
+# Pengujian Queue
+q = Queue()
+
+# Memasukkan data 10, 20, 30, 40, 50
+for data in [10, 20, 30, 40, 50]:
+    q.enqueue(data)
+
+print("Isi Queue:", list(q.items))
+print("Front:", q.peek())
+print("Size:", q.size())
+
+# Dequeue dua kali
+print("Dequeue pertama:", q.dequeue())
+print("Dequeue kedua:", q.dequeue())
+print("Isi Queue:", list(q.items))
+
+# Menambahkan 60 dan 70
+q.enqueue(60)
+q.enqueue(70)
+print("Setelah enqueue 60 dan 70:", list(q.items))
+
+# Mengeluarkan seluruh elemen sampai Queue kosong
+print("\nMengeluarkan seluruh elemen:")
+while not q.is_empty():
+    print(q.dequeue())
+
+# Menguji dequeue dan peek ketika Queue kosong
+print("\nDequeue saat kosong:", q.dequeue())
+print("Peek saat kosong:", q.peek())
+print("Apakah Queue kosong?", q.is_empty())
+
+                  
+5.26. Praktik Mandiri 5.2 — Circular Queue
+Membuat CircularQueue dengan kapasitas 4
+class CircularQueue:
+    def __init__(self, capacity):
+        self.capacity = capacity
+        self.items = [None] * capacity
+        self.front = 0
+        self.rear = 0
+        self.count = 0
+
+    def is_empty(self):
+        return self.count == 0
+
+    def is_full(self):
+        return self.count == self.capacity
+
+    def enqueue(self, data):
+        if self.is_full():
+            print("Queue penuh! Data", data, "tidak dapat ditambahkan.")
+            return False
+
+        self.items[self.rear] = data
+        self.rear = (self.rear + 1) % self.capacity
+        self.count += 1
+        return True
+
+    def dequeue(self):
+        if self.is_empty():
+            print("Queue kosong!")
+            return None
+
+        data = self.items[self.front]
+        self.items[self.front] = None
+        self.front = (self.front + 1) % self.capacity
+        self.count -= 1
+        return data
+
+    def display(self):
+        print("Items :", self.items)
+        print("Front :", self.front)
+        print("Rear  :", self.rear)
+        print("Count :", self.count)
+        print("Penuh :", self.is_full())
+        print("Kosong:", self.is_empty())
+        print("-" * 35)
+
+
+# Pengujian CircularQueue
+cq = CircularQueue(4)
+
+print("Enqueue A")
+cq.enqueue("A")
+cq.display()
+
+print("Enqueue B")
+cq.enqueue("B")
+cq.display()
+
+print("Enqueue C")
+cq.enqueue("C")
+cq.display()
+
+print("Enqueue D")
+cq.enqueue("D")
+cq.display()
+
+print("Mencoba enqueue E saat penuh")
+cq.enqueue("E")
+cq.display()
+
+print("Dequeue pertama:", cq.dequeue())
+cq.display()
+
+print("Dequeue kedua:", cq.dequeue())
+cq.display()
+
+print("Enqueue E")
+cq.enqueue("E")
+cq.display()
+
+print("Enqueue F")
+cq.enqueue("F")
+cq.display()
+
+
+5.27. Praktik Mandiri 5.3 — Deque dan Palindrome
+Membuat fungsi is_palindrome() 
+from collections import deque
+
+def is_palindrome(text, tampilkan_pasangan=False):
+    # Normalisasi: huruf kecil dan hanya huruf/angka
+    chars = deque(
+        c.lower() for c in text if c.isalnum()
+    )
+
+    while len(chars) > 1:
+        kiri = chars.popleft()
+        kanan = chars.pop()
+
+        if tampilkan_pasangan:
+            print(f"Kiri: {kiri} | Kanan: {kanan}")
+
+        if kiri != kanan:
+            if tampilkan_pasangan:
+                print("Hasil: Bukan palindrome")
+            return False
+
+    if tampilkan_pasangan:
+        print("Hasil: Palindrome")
+
+    return True
+
+
+# Pengujian kata
+kata = ["level", "katak", "radar", "python", "algoritma"]
+
+for teks in kata:
+    print(teks, "=", is_palindrome(teks))
+
+# Pengujian kalimat yang mengandung spasi dan tanda baca
+kalimat = "A man, a plan, a canal: Panama!"
+print(kalimat, "=", is_palindrome(kalimat))                  
